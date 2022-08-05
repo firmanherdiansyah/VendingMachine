@@ -28,8 +28,6 @@ namespace VendingMachineApp
         static void Main(string[] args)
         {
 
-            var acceptedBankNotes = new string[] { "2000", "5000", "10000", "20000", "50000" };
-
             var foodContainer = new List<Food>
             {
                 new Food() { ProductCodeId=220, Name = "Biskuit", Price = 6000 },
@@ -51,11 +49,9 @@ namespace VendingMachineApp
                 new Food() { ProductCodeId=941, Name = "Cokelat", Price = 15000 }
             };
 
-            VendingMachine _vendingMachine = new VendingMachine(acceptedBankNotes, foodContainer);
+            VendingMachine _vendingMachine = new VendingMachine(foodContainer);
 
-            Console.WriteLine("Vending Machine Toko Firman is Running");
-            Console.WriteLine();
-            Console.WriteLine("Press ENTER to Buy Food");
+            _vendingMachine.StartUp();
 
             if (Console.ReadKey().Key == ConsoleKey.Enter)
             {
@@ -110,24 +106,17 @@ namespace VendingMachineApp
 
         private IDictionary<string, double> _moneyStock = new System.Collections.Generic.Dictionary<string, double>();
 
-        private string[] _acceptedBankNotes;
+        protected string[] _acceptedBankNotes = new string[] { "2000", "5000", "10000", "20000", "50000" };
 
         private double _totalAmountPaid = 0;
 
 
-        public VendingMachine(string[] acceptedBankNotes, List<Food>? foodContainer = null)
+        public VendingMachine(List<Food>? foodContainer = null)
         {
-
-            _acceptedBankNotes = acceptedBankNotes;
 
             if (foodContainer != null)
             {
                 _foodContainer = foodContainer;
-            }
-
-            foreach (var bankNotes in acceptedBankNotes)
-            {
-                _moneyStock.Add(bankNotes, 0);
             }
 
             if (_foodContainer.Count > 0)
@@ -351,6 +340,13 @@ namespace VendingMachineApp
                 Task.Delay(1000).Wait();
                 Console.WriteLine($"--Send Rp.{ diff }--");
             }
+        }
+
+        internal void StartUp()
+        {
+            Console.WriteLine("Vending Machine Toko Firman is Running");
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to Buy Food");
         }
     }
 
