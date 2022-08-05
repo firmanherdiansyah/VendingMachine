@@ -17,6 +17,7 @@ Cokelat: 15000
 */
 
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace VendingMachineApp
 {
@@ -80,9 +81,12 @@ namespace VendingMachineApp
                 }                
             }
 
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to Exit");
+
             while (Console.ReadKey().Key != ConsoleKey.Enter) 
             {
-                Console.WriteLine("Press ENTER to Exit");
+                
             }    
 
         }
