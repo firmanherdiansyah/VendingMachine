@@ -73,6 +73,9 @@ namespace VendingMachineApp
                         Console.WriteLine("Payment Complete, Please take your food from Pickup Box Below");
                         Console.WriteLine();
                         _vendingMachine.SendFood();
+                        _vendingMachine.SendMoneyChange();
+                        Console.WriteLine();
+                        Console.WriteLine("Thank you - Enjoy the food");
                     }        
                 }                
             }
@@ -105,6 +108,8 @@ namespace VendingMachineApp
 
         private string[] _acceptedBankNotes;
 
+        private double _totalAmountPaid = 0;
+
 
         public VendingMachine(string[] acceptedBankNotes, List<Food>? foodContainer = null)
         {
@@ -130,9 +135,8 @@ namespace VendingMachineApp
         public bool PayPurchase()
         {
             bool payComplete = false;
-            double totalAmountPaid = 0;
 
-            while (totalAmountPaid < _totalAmount)
+            while (_totalAmountPaid < _totalAmount)
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Insert Money (Insert Number to Simulate eg. 500000), Press ENTER to Confirm");
@@ -156,9 +160,9 @@ namespace VendingMachineApp
                 }
                 else 
                 {
-                    totalAmountPaid += Double.Parse(moneyAmountString);
+                    _totalAmountPaid += Double.Parse(moneyAmountString);
 
-                    if (totalAmountPaid < _totalAmount)
+                    if (_totalAmountPaid < _totalAmount)
                     {
                         Console.WriteLine();
                         Console.WriteLine($"Money not enouh");
@@ -323,13 +327,25 @@ namespace VendingMachineApp
 
         internal void SendFood()
         {
-            var purchasedFood = _foodContainer.Where(c => c.ProductCodeId == _foodToPurchase.ProductCodeId);
 
-            foreach (var food in purchasedFood)
+            for (int i = 0; i < _foodNumberToPurchase; i++)
             {
-                Console.WriteLine("Send Food to Pickup Box");
+                Console.WriteLine("--Send Food to Pickup Box--");
                 Console.WriteLine();
-                Task.Delay(1000).Wait();              
+                Task.Delay(1000).Wait();
+
+            } 
+        }
+
+        internal void SendMoneyChange()
+        {
+            var diff = _totalAmountPaid - _totalAmount;
+            if (diff>0)
+            {
+                Console.WriteLine("Take Your change on Coin Changer");
+                Console.WriteLine();
+                Task.Delay(1000).Wait();
+                Console.WriteLine($"--Send Rp.{ diff }--");
             }
         }
     }
